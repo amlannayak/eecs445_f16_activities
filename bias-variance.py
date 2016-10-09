@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 kernel='rbf'
 
 #Cost values
-Cs = [1,10,100,200]
+Cs = [1,2,5,10,20,50,100,200,500,1000]
 
 def plot_boundary(clf,g):
     #adapted from http://scikit-learn.org/stable/modules/svm.html
@@ -18,7 +18,7 @@ def plot_boundary(clf,g):
 
 #define data
 n = 100
-sub = 10
+sub = 50
 var = 2
 mean = 1
 mean1 = [mean, mean]
@@ -35,7 +35,7 @@ ytest = np.asarray([-1]*(n) + [1]*(n))
 
 
 biasSquared = np.zeros(sub)
-variance = np.zeros(sub)
+preds = np.zeros((2*n,sub))
 
 b = np.zeros(len(Cs))
 v = np.zeros(len(Cs))
@@ -51,11 +51,7 @@ for j,C in enumerate(Cs):
         
         #fit SVM
         svc = svm.SVC(kernel=kernel,C=C).fit(X,y)
-        yhat = svc.predict(Xtest)
-
-        #calculate bias and variance
-        biasSquared[i] = (np.mean(yhat-ytest))**2
-        variance[i] = np.var(yhat)
+        preds[:,i] = svc.predict(Xtest)
         
         #plot 
         if i < 4:
@@ -64,11 +60,11 @@ for j,C in enumerate(Cs):
             plt.plot(x1, y1, 'b.', x2, y2, 'r.')
 
     plt.axis([-g,g,-g,g])
-    #plt.suptitle('Avg Squared Bias = %f, Avg Variance = %f' % (np.mean(variance), np.mean(biasSquared)))
+    plt.suptitle('Cost = %i' % (C))
     plt.show()
-    b[j] = np.mean(biasSquared)
-    v[j] = np.mean(variance)
-'''
+    b[j] = np.mean(np.mean(preds,1) - ytest) 
+    v[j] = np.mean(np.var(preds,1))
+
 plt.subplot(2,1,1)
 plt.plot(Cs,b)
 plt.title('bias')
@@ -76,4 +72,4 @@ plt.subplot(2,1,2)
 plt.plot(Cs,v)
 plt.title('variance')
 plt.show()
-'''
+
