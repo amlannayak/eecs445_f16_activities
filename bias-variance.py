@@ -18,7 +18,7 @@ def plot_boundary(clf,g):
 
 #define data
 n = 100
-sub = 50
+sub = 100
 var = 2
 mean = 1
 mean1 = [mean, mean]
@@ -33,12 +33,10 @@ x2, y2 = np.random.multivariate_normal(mean2, cov2, n).T
 Xtest = np.concatenate((np.asarray([x1,y1]).T,np.asarray([x2,y2]).T),axis=0)
 ytest = np.asarray([-1]*(n) + [1]*(n))
 
-
-biasSquared = np.zeros(sub)
+#pre-allocate variables
 preds = np.zeros((2*n,sub))
-
-b = np.zeros(len(Cs))
-v = np.zeros(len(Cs))
+bias = np.zeros(len(Cs))
+variance = np.zeros(len(Cs))
 
 for j,C in enumerate(Cs):
     for i in range(sub):
@@ -62,8 +60,10 @@ for j,C in enumerate(Cs):
     plt.axis([-g,g,-g,g])
     plt.suptitle('Cost = %i' % (C))
     plt.show()
-    b[j] = np.mean(np.mean(preds,1) - ytest) 
-    v[j] = np.mean(np.var(preds,1))
+
+    #Calculate average bias and variance
+    bias[j] = np.mean(np.mean(preds,1) - ytest) 
+    variance[j] = np.mean(np.var(preds,1))
 
 plt.subplot(2,1,1)
 plt.plot(Cs,b)
