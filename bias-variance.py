@@ -66,10 +66,10 @@ for j,C in enumerate(Cs):
     variance[j] = np.mean(np.var(preds,1))
 
 plt.subplot(2,1,1)
-plt.plot(Cs,b)
+plt.plot(Cs,bias)
 plt.title('bias')
 plt.subplot(2,1,2)
-plt.plot(Cs,v)
+plt.plot(Cs,variance)
 plt.title('variance')
 plt.show()
 

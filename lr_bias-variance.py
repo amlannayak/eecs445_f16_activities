@@ -1,5 +1,4 @@
 import numpy as np
-from sklearn.preprocessing import PolynomialFeatures
 import matplotlib.pyplot as plt
 from numpy.matlib import repmat
 
@@ -24,8 +23,6 @@ mse = np.zeros(len(degrees))
 values = np.expand_dims(np.linspace(0,2*np.pi,100),1)
 
 for j,degree in enumerate(degrees):
-
-    poly = PolynomialFeatures(degree)    
     
     for i in range(sub):
             
@@ -33,16 +30,19 @@ for j,degree in enumerate(degrees):
         x = np.random.random((n,1))*2*np.pi
         y = np.sin(x) + np.random.normal(mean,std,(n,1))
         
-        #get features
-        A = poly.fit_transform(x)
+        #TODO
+        #create features corresponding to degree - ex: 1, x, x^2, x^3...
+        A = 
         
-        #fit model
-        coeffs = np.linalg.pinv(A).dot(y)
+        #TODO:        
+        #fit model using least squares solution (linear regression)
+        #later include ridge regression/normalization
+        coeffs = 
                 
-
+        #store predictions for each sampling
         preds[:,i] = poly.fit_transform(Xtest).dot(coeffs)[:,0]
         
-        #plot 
+        #plot 9 images
         if i < 9:
             plt.subplot(3,3,i+1)
             plt.plot(values,poly.fit_transform(values).dot(coeffs),x,y,'.b')
@@ -51,10 +51,11 @@ for j,degree in enumerate(degrees):
     plt.suptitle('PolyFit = %i' % (degree))
     plt.show()
 
-    #Calculate average bias and variance
-    bias[j] = np.mean(np.mean(preds,1) - ytest)**2 
-    variance[j] = np.mean(np.var(preds,1))
-    mse[j] = np.mean(np.mean(np.square(preds - repmat(ytest,1,sub))))
+    #TODO
+    #Calculate mean bias, variance, and MSE
+    bias[j] = 
+    variance[j] = 
+    mse[j] = 
 
 plt.subplot(3,1,1)
 plt.plot(degrees,bias)
